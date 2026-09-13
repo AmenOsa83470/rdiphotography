@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RDI Photography — Sports de combat &amp; Live</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>RDI Photography — Sports de combat &amp; Live</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Inter:wght@400;500;600&amp;display=swap"
+
+      rel="stylesheet">
+    <style>
   :root{
     --bg: #090d13;
     --panel: #10161f;
@@ -53,7 +55,7 @@
     display:flex;
     align-items:center;
     justify-content:space-between;
-    padding:22px 6vw;
+    padding:calc(22px + env(safe-area-inset-top)) 6vw 22px;
     background:linear-gradient(to bottom, rgba(9,13,19,0.92), rgba(9,13,19,0));
     backdrop-filter:blur(2px);
   }
@@ -73,6 +75,14 @@
     letter-spacing:0.04em;
   }
 
+  .logo-slot:has(img){
+    border:none;
+    background:#fff;
+    border-radius:10px;
+    padding:6px;
+    box-shadow:0 4px 16px rgba(0,0,0,0.35);
+  }
+
   .logo-slot img{
     width:100%;
     height:100%;
@@ -80,11 +90,55 @@
     display:block;
   }
 
-  nav{ display:flex; gap:2.4rem; font-size:0.92rem; color:var(--muted); }
+  .logo-slot:has(img) img{
+    border-radius:6px;
+  }
+
+  nav{ display:flex; gap:2.2rem; font-size:0.92rem; color:var(--muted); }
   nav a{ transition:color 0.25s ease; }
   nav a:hover{ color:var(--ice); }
 
-  .nav-toggle{ display:none; }
+  /* ---------- Burger (mobile) ---------- */
+  .burger{
+    display:none;
+    flex-direction:column;
+    justify-content:center;
+    gap:5px;
+    width:32px;
+    height:32px;
+    background:none;
+    border:none;
+    cursor:pointer;
+    z-index:200;
+    padding:0;
+  }
+  .burger span{
+    width:100%;
+    height:2px;
+    background:var(--text);
+  }
+
+  .mobile-nav{
+    position:fixed;
+    inset:0;
+    z-index:150;
+    background:var(--bg);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:1.6rem;
+    opacity:0;
+    visibility:hidden;
+    transition:opacity 0.3s ease;
+  }
+  .mobile-nav.is-open{ opacity:1; visibility:visible; }
+  .mobile-nav a{
+    font-family:'Anton', sans-serif;
+    text-transform:uppercase;
+    font-size:1.6rem;
+    color:var(--text);
+  }
 
   /* ---------- Hero ---------- */
   .hero{
@@ -105,9 +159,6 @@
     inset:0;
     background:var(--panel);
     border-bottom:1px solid var(--line);
-    display:flex;
-    align-items:center;
-    justify-content:center;
     overflow:hidden;
   }
 
@@ -117,18 +168,6 @@
     background:
       linear-gradient(180deg, rgba(9,13,19,0.15) 0%, rgba(9,13,19,0.55) 55%, var(--bg) 100%);
     z-index:1;
-  }
-
-  .hero-photo-label{
-    position:relative;
-    z-index:0;
-    color:rgba(139,151,168,0.45);
-    font-size:0.85rem;
-    letter-spacing:0.08em;
-    text-align:center;
-    border:1px dashed rgba(139,151,168,0.3);
-    padding:1.4rem 2rem;
-    border-radius:6px;
   }
 
   .hero-content{ position:relative; z-index:2; max-width:880px; }
@@ -176,23 +215,6 @@
   }
 
   @keyframes fadeIn{ to{ opacity:1; } }
-
-  .scroll-cue{
-    position:absolute;
-    bottom:1.8rem; left:6vw;
-    z-index:2;
-    font-size:0.78rem;
-    color:var(--muted);
-    display:flex;
-    align-items:center;
-    gap:0.6rem;
-  }
-
-  .scroll-cue::before{
-    content:"";
-    width:1px; height:26px;
-    background:linear-gradient(var(--ice), transparent);
-  }
 
   /* ---------- Section shell ---------- */
   section{
@@ -257,6 +279,11 @@
     min-height:160px;
   }
 
+  /* Une fois une vraie photo présente : plus de bordure pointillée "placeholder" */
+  .ph:has(img){
+    border:none;
+  }
+
   .ph img{
     width:100%;
     height:auto;
@@ -296,6 +323,8 @@
     overflow:hidden;
     cursor:pointer;
   }
+
+  .about-photo-slot:has(img){ border:none; padding:0; }
 
   .about-photo-slot img,
   .hero-photo-slot img{
@@ -373,6 +402,7 @@
   /* ---------- Responsive ---------- */
   @media (max-width:860px){
     nav{ display:none; }
+    .burger{ display:flex; }
     .about, .contact-grid{ grid-template-columns:1fr; }
     .mosaic{ column-count:2; }
     section{ padding:5rem 6vw; }
@@ -430,44 +460,41 @@
 
   .lightbox-close:hover{ border-color:var(--ice); color:var(--ice); }
 </style>
-</head>
-<body>
-
-<header>
-  <div class="logo-slot"><img src="Photos/LOGO_RDI.JPG" alt="Logo"></div>
-  <nav>
-    <a href="#combat">Sports de Combat</a>
-    <a href="#concerts">Concerts</a>
-    <a href="#danse">Danse</a>
-    <a href="#orchestre">Orchestre</a>
-    <a href="#apropos">À propos</a>
-    <a href="#contact">Contact</a>
-  </nav>
-</header>
-
-<section class="hero">
-  <div class="hero-photo-slot">
-    <div class="hero-photo-label"><img src="Photos/couverture.jpg" alt="Photo de couverture"></div>
-  </div>
-  <div class="hero-content">
-    <p class="hero-eyebrow">RDI Photography — Sports de Combat / Concerts / Danse / Orchestre</p>
-    <h1 class="display">
-      <span><em>L'instant</em></span>
-      <span><em>où tout</em></span>
-      <span><em>bascule.</em></span>
-    </h1>
-    <p class="hero-sub">Je capture ce que les autres regardent sans voir : la fraction de seconde où un coup part, où une lumière explose sur scène, où un corps se suspend dans l'air.</p>
-  </div>
-</section>
-
-<section id="combat">
-  <div class="section-head">
-    <div>
-      <span class="section-num">01</span>
-      <h2 class="display">Sport de combat</h2>
+  </head>
+  <body>
+    <header>
+      <div class="logo-slot"><img src="Photos/LOGO_RDI.JPG" alt="Logo"></div>
+      <nav> <a href="#combat">Sports de Combat</a> <a href="#concerts">Concerts</a>
+        <a href="#danse">Danse</a> <a href="#orchestre">Orchestre</a> <a href="#fitness">Fitness</a>
+        <a href="#apropos">À propos</a> <a href="#contact">Contact</a> </nav>
+      <button class="burger" id="burgerBtn" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span> </button>
+    </header>
+    <div class="mobile-nav" id="mobileNav"> <a href="#combat">Sports de Combat</a>
+      <a href="#concerts">Concerts</a> <a href="#danse">Danse</a> <a href="#orchestre">Orchestre</a>
+      <a href="#fitness">Fitness</a> <a href="#apropos">À propos</a> <a href="#contact">Contact</a>
     </div>
-    <p>L'impact, la tension avant l'affrontement, l'expression au moment où tout se joue.</p>
-  </div>
+    <section class="hero">
+      <div class="hero-photo-slot"> <img src="Photos/couverture.jpg" alt="Photo de couverture">
+      </div>
+      <div class="hero-content">
+        <p class="hero-eyebrow">RDI Photography — Sports de Combat / Concerts /
+          Danse / Orchestre / Fitness</p>
+        <h1 class="display"> <span><em>L'instant</em></span> <span><em>où
+              tout</em></span> <span><em>bascule.</em></span> </h1>
+        <p class="hero-sub">Je capture ce que les autres regardent sans voir :
+          la fraction de seconde où un coup part, où une lumière explose
+          sur scène, où un corps se suspend dans l'air.</p>
+      </div>
+    </section>
+    <section id="combat">
+      <div class="section-head">
+        <div> <span class="section-num">01</span>
+          <h2 class="display">Sport de combat</h2>
+        </div>
+        <p>L'impact, la tension avant l'affrontement, l'expression au moment où
+          tout se joue.</p>
+      </div>
       <div class="mosaic combat">
         <div class="ph"><img src="Photos/Combat-01.jpg" alt="Combat-01"></div>
         <div class="ph"><img src="Photos/Combat-02.jpg" alt="Combat-02"></div>
@@ -476,34 +503,30 @@
         <div class="ph"><img src="Photos/Combat-06.jpg" alt="Combat-06"></div>
         <div class="ph"><img src="Photos/Combat-07.jpg" alt="Combat-07"></div>
       </div>
-</section>
-
-<section id="concerts" class="concerts-panel">
-  <div class="section-head">
-    <div>
-      <span class="section-num">02</span>
-      <h2 class="display">Concerts</h2>
-    </div>
-    <p>L'énergie de la foule, le jeu de lumière.</p>
-  </div>
-  <div class="mosaic concerts">
+    </section>
+    <section id="concerts" class="concerts-panel">
+      <div class="section-head">
+        <div> <span class="section-num">02</span>
+          <h2 class="display">Concerts</h2>
+        </div>
+        <p>L'énergie de la foule, le jeu de lumière.</p>
+      </div>
+      <div class="mosaic concerts">
         <div class="ph"><img src="Photos/Concert-01.jpg" alt="Concert-01"></div>
         <div class="ph"><img src="Photos/Concert-02.JPG" alt="Concert-02"></div>
         <div class="ph"><img src="Photos/Concert-03.JPG" alt="Concert-03"></div>
         <div class="ph"><img src="Photos/Concert-04.JPG" alt="Concert-04"></div>
-        <div class="ph"><img src="Photos/Concert-05.JPG" alt="Concert-06"></div>
-  </div>
-</section>
-
-  <section id="danse" class="danse-panel">
-  <div class="section-head">
-    <div>
-      <span class="section-num">03</span>
-      <h2 class="display">Danse</h2>
-    </div>
-    <p>Le mouvement suspendu sur scène.</p>
-  </div>
-  <div class="mosaic concerts">
+        <div class="ph"><img src="Photos/Concert-05.JPG" alt="Concert-05"></div>
+      </div>
+    </section>
+    <section id="danse" class="danse-panel">
+      <div class="section-head">
+        <div> <span class="section-num">03</span>
+          <h2 class="display">Danse</h2>
+        </div>
+        <p>Le mouvement suspendu sur scène.</p>
+      </div>
+      <div class="mosaic concerts">
         <div class="ph"><img src="Photos/Danse-01.jpg" alt="Danse-01"></div>
         <div class="ph"><img src="Photos/Danse-02.jpg" alt="Danse-02"></div>
         <div class="ph"><img src="Photos/Danse-03.jpg" alt="Danse-03"></div>
@@ -511,72 +534,98 @@
         <div class="ph"><img src="Photos/Danse-05.jpg" alt="Danse-05"></div>
         <div class="ph"><img src="Photos/Danse-06.jpg" alt="Danse-06"></div>
         <div class="ph"><img src="Photos/Danse-07.jpg" alt="Danse-07"></div>
-  </div>
-</section>
-
-  <section id="orchestre" class="orchestre-panel">
-  <div class="section-head">
-    <div>
-      <span class="section-num">04</span>
-      <h2 class="display">Orchestres</h2>
-    </div>
-    <p>Où la diversité des voix fusionne pour donner naissance à une âme unique.</p>
-  </div>
-  <div class="mosaic concerts">
+      </div>
+    </section>
+    <section id="orchestre" class="orchestre-panel">
+      <div class="section-head">
+        <div> <span class="section-num">04</span>
+          <h2 class="display">Orchestres</h2>
+        </div>
+        <p>Où la diversité des voix fusionne pour donner naissance à une âme
+          unique.</p>
+      </div>
+      <div class="mosaic concerts">
         <div class="ph"><img src="Photos/Orchestre-01.jpg" alt="Orchestre-01"></div>
         <div class="ph"><img src="Photos/Orchestre-02.jpg" alt="Orchestre-02"></div>
         <div class="ph"><img src="Photos/Orchestre-03.jpg" alt="Orchestre-03"></div>
         <div class="ph"><img src="Photos/Orchestre-04.jpg" alt="Orchestre-04"></div>
-  </div>
-</section>
-
-<section id="apropos">
-  <div class="section-head">
-    <div>
-      <span class="section-num">05</span>
-      <h2 class="display">À propos</h2>
-    </div>
-  </div>
-  <div class="about">
-    <div class="about-text">
-      <p>Je capture ce que les autres regardent sans voir : la fraction de seconde où un coup part, où une lumière explose sur scène, où un corps se suspend dans l'air.</p>
-      <p>Sport de combat, concerts rock, danse — trois univers, une seule obsession : l'instant où l'énergie devient visible. Pas de mise en scène. Juste l'impact du réel et le vertige du vivant, figés à l'image.</p>
-      <p>J'ai eu l'occasion de couvrir des événements pour la Jeunesse Arménienne de France, Ares, l'UFN, le Cafe Danse et Inverdance.</p>
-      <div class="credentials">
-        <span>Jeunesse Arménienne de France</span>
-        <span>Ares</span>
-        <span>UFN</span>
-        <span>Cafe Danse</span>
-        <span>Parallel Minds</span>
-        <span>The Enders</span>
-        <span>Inverdance</span>
       </div>
+    </section>
+    <section id="fitness" class="fitness-panel">
+      <div class="section-head">
+        <div> <span class="section-num">05</span>
+          <h2 class="display">Sous tension</h2>
+        </div>
+        <p>L'effort qui façonne, la tension qui construit, le corps qui repousse
+          ses limites.</p>
+      </div>
+      <div class="mosaic concerts">
+        <div class="ph"><img src="Photos/Fitness-01.jpg" alt="Fitness-01"></div>
+        <div class="ph"><img src="Photos/Fitness-02.jpg" alt="Fitness-02"></div>
+        <div class="ph"><img src="Photos/Fitness-03.jpg" alt="Fitness-03"></div>
+        <div class="ph"><img src="Photos/Fitness-04.jpg" alt="Fitness-04"></div>
+      </div>
+    </section>
+    <section id="apropos">
+      <div class="section-head">
+        <div> <span class="section-num">06</span>
+          <h2 class="display">À propos</h2>
+        </div>
+      </div>
+      <div class="about">
+        <div class="about-text">
+          <p>Je capture ce que les autres regardent sans voir : la fraction de
+            seconde où un coup part, où une lumière explose sur scène, où un
+            corps se suspend dans l'air, où l'effort atteint son point de
+            rupture.</p>
+          <p>Sport de combat, concerts, danse, musique, fitness — des univers
+            différents, une seule obsession : l'instant où l'énergie devient
+            visible. Pas de mise en scène. Juste l'impact du réel et le vertige
+            du vivant, figés à l'image.</p>
+          <p>J'ai eu l'occasion de couvrir des événements pour la Jeunesse
+            Arménienne de France, Ares, l'UFN, le Cafe Danse et Inverdance.</p>
+          <div class="credentials"> <span>Jeunesse Arménienne de France</span>
+            <span>Ares</span> <span>UFN</span> <span>Cafe Danse</span> <span>Parallel
+              Minds</span> <span>The Enders</span> <span>Inverdance</span> </div>
+        </div>
+        <div class="about-photo-slot"><img src="Photos/portrait.WEBP" alt="Portrait RDI Photograpy"></div>
+      </div>
+    </section>
+    <section id="contact" class="contact">
+      <div class="contact-grid">
+        <h2 class="display">Travaillons ensemble.</h2>
+        <div class="contact-fields">
+          <div class="field-slot"><span><a href="mailto:demirci.regis@gmail.com">Envoyer
+                un e-mail</a></span><b>EMAIL</b></div>
+          <div class="field-slot"><span>06.26.08.59.28</span><b>TÉL.</b></div>
+          <div class="field-slot"><span><a href="https://www.instagram.com/regis_demirci_photography/">Régis
+                Demirci Photography</a></span><b>INSTAGRAM</b></div>
+        </div>
+      </div>
+    </section>
+    <footer> <span>©2026 RDI Photography — Tous droits réservés</span>
+    </footer>
+    <div class="lightbox" id="lightbox"> <button class="lightbox-close" id="lightboxClose"
+
+        aria-label="Fermer">×</button> <img id="lightboxImg" src="" alt="">
     </div>
-  </div>
-</section>
+    <script>
+  // Menu burger (mobile)
+  const burgerBtn = document.getElementById('burgerBtn');
+  const mobileNav = document.getElementById('mobileNav');
 
-<section id="contact" class="contact">
-  <div class="contact-grid">
-    <h2 class="display">Travaillons ensemble.</h2>
-    <div class="contact-fields">
-      <div class="field-slot"><span><a href="mailto:demirci.regis@gmail.com">Envoyer un e-mail</a></span><b>EMAIL</b></div>
-      <div class="field-slot"><span>06.26.08.59.28</span><b>TÉL.</b></div>
-      <div class="field-slot"><span><a href="https://www.instagram.com/regis_demirci_photography/">Régis Demirci Photography</a></span><b>INSTAGRAM</b></div>
-    </div>
-  </div>
-</section>
+  burgerBtn.addEventListener('click', () => {
+    const isOpen = mobileNav.classList.toggle('is-open');
+    burgerBtn.setAttribute('aria-expanded', isOpen);
+  });
 
-<footer>
-  <span>RDI Photography</span>
-  <span>rdiphotography.com</span>
-</footer>
+  mobileNav.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileNav.classList.remove('is-open');
+      burgerBtn.setAttribute('aria-expanded', false);
+    });
+  });
 
-<div class="lightbox" id="lightbox">
-  <button class="lightbox-close" id="lightboxClose" aria-label="Fermer">&times;</button>
-  <img id="lightboxImg" src="" alt="">
-</div>
-
-<script>
   // Clic sur une photo (dans .ph, la photo de couverture, ou le portrait) -> ouverture en grand
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightboxImg');
@@ -603,6 +652,5 @@
     if (e.key === 'Escape') closeLightbox();
   });
 </script>
-
-</body>
+  </body>
 </html>
